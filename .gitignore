@@ -4,3 +4,4 @@ tests/test_images/
 DerivedData/
 .DS_Store
 *.zip
+*.dmg

@@ -26,14 +26,16 @@ jobs:
           sha=$(shasum -a 256 dist/FitsPreviewer.zip | awk '{print $1}')
           echo "sha=${sha}" >> "$GITHUB_OUTPUT"
 
-      - name: Upload zip
+      - name: Upload zip and disk image
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
-            gh release upload "${GITHUB_REF_NAME}" dist/FitsPreviewer.zip --clobber
+            gh release upload "${GITHUB_REF_NAME}" \
+              dist/FitsPreviewer.zip dist/FitsPreviewer.dmg --clobber
           else
-            gh release create "${GITHUB_REF_NAME}" dist/FitsPreviewer.zip \
+            gh release create "${GITHUB_REF_NAME}" \
+              dist/FitsPreviewer.zip dist/FitsPreviewer.dmg \
               --title "${GITHUB_REF_NAME}" --generate-notes
           fi
 

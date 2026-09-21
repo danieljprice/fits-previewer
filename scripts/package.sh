@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build the app and zip it for a GitHub release or a Homebrew cask.
+# Build the app, zip it for the Homebrew cask, and make a drag-install disk image.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,9 +15,19 @@ codesign --force --sign - \
     --timestamp=none \
     "$APP"
 mkdir -p dist
-rm -f dist/FitsPreviewer.zip
+rm -f dist/FitsPreviewer.zip dist/FitsPreviewer.dmg
 ditto -c -k --keepParent \
     "$APP" \
     dist/FitsPreviewer.zip
 echo "wrote dist/FitsPreviewer.zip"
 shasum -a 256 dist/FitsPreviewer.zip
+
+# Copy the signed app. Do not add files to the original bundle after codesign.
+STAGE="$(mktemp -d)"
+trap 'rm -rf "$STAGE"' EXIT
+ditto "$APP" "$STAGE/FitsPreviewer.app"
+ln -s /Applications "$STAGE/Applications"
+hdiutil create -volname FitsPreviewer -srcfolder "$STAGE" -ov -format UDZO \
+    dist/FitsPreviewer.dmg
+echo "wrote dist/FitsPreviewer.dmg"
+shasum -a 256 dist/FitsPreviewer.dmg
