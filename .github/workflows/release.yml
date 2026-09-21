@@ -20,7 +20,11 @@ jobs:
         run: make test
 
       - name: Package
-        run: ./scripts/package.sh
+        id: package
+        run: |
+          ./scripts/package.sh
+          sha=$(shasum -a 256 dist/FitsPreviewer.zip | awk '{print $1}')
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
 
       - name: Upload zip
         env:
@@ -32,3 +36,18 @@ jobs:
             gh release create "${GITHUB_REF_NAME}" dist/FitsPreviewer.zip \
               --title "${GITHUB_REF_NAME}" --generate-notes
           fi
+
+      - name: Bump Homebrew cask
+        if: github.repository == 'danieljprice/fits-previewer'
+        continue-on-error: true
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.BREW_TOKEN }}
+        run: |
+          git config --global user.email "daniel.price@monash.edu"
+          git config --global user.name "Daniel Price"
+          brew tap danieljprice/all
+          brew trust danieljprice/all
+          brew bump-cask-pr --no-browse --no-audit --no-fork \
+            --version="${GITHUB_REF_NAME#v}" \
+            --sha256="${{ steps.package.outputs.sha }}" \
+            danieljprice/all/fits-previewer
