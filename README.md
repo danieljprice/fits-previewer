@@ -2,12 +2,21 @@
 
 This package is something I have been dreaming of for a while. It implements a Finder Quick Look for FITS files on macOS. You can then press the spacebar on a `.fits` or `.fits.gz` file to see a preview of the image or data cube (for data cubes it shows a playable movie).
 
-## Install instructions
+## How to install
 
 ```sh
 brew tap danieljprice/all
-brew install --cask fits-previewer
+brew install fits-previewer
 ```
+or download the .dmg file and drag the .app to the Applications folder.
+
+Launch FitsPreviewer once after installing. Then select a FITS file in Finder and press the spacebar.
+
+## Contributing
+
+The previews are designed to work well with Astronomy data.
+If you come across an unusual FITS file and a good idea for how to preview it,
+feel free to get in touch via the github issues. Also feel free to contribute code via pull request.
 
 ## How to compile and install from source on your Mac
 
@@ -16,19 +25,13 @@ First, install CFITSIO via homebrew:
 brew install cfitsio
 ```
 
-Assuming you have Xcode installed, you should be then to build using:
-```sh
-make app
-```
-
-That writes `build/DerivedData/Build/Products/Release/FitsPreviewer.app`. Copy the app into `~/Applications` or `/Applications` and register it:
+Assuming you have Xcode installed, build and install with:
 
 ```sh
-APP="$HOME/Applications/FitsPreviewer.app"
-ditto build/DerivedData/Build/Products/Release/FitsPreviewer.app "$APP"
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f -R -trusted "$APP"
-qlmanage -r
+make install INSTALL_DIR=/Applications
 ```
+
+That copies the app to `/Applications/FitsPreviewer.app` and registers it. Use `make install` to put it in `~/Applications` instead.
 
 If the spacebar still shows nothing, open System Settings → General → Login Items & Extensions → Quick Look and enable FitsPreviewer.
 
