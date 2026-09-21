@@ -17,6 +17,7 @@
 		B10000000000000000000008 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005; };
 		B10000000000000000000009 /* FitsPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000002; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B1000000000000000000000A /* FitsThumbnail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000003; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B1000000000000000000000B /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000F; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		F1000000000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1000000000000000000000D /* FitsPreviewRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FitsPreviewRender.h; sourceTree = "<group>"; };
 		F1000000000000000000000E /* FitsPreviewRender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FitsPreviewRender.m; sourceTree = "<group>"; };
+		F1000000000000000000000F /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		F20000000000000000000001 /* FitsPreviewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitsPreviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F20000000000000000000002 /* FitsPreview.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FitsPreview.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F20000000000000000000003 /* FitsThumbnail.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FitsThumbnail.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +136,7 @@
 				F10000000000000000000004 /* AppDelegate.h */,
 				F10000000000000000000005 /* AppDelegate.m */,
 				F10000000000000000000006 /* Info.plist */,
+				F1000000000000000000000F /* AppIcon.icns */,
 			);
 			path = FitsPreviewer;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 			buildPhases = (
 				S10000000000000000000003 /* Sources */,
 				D10000000000000000000001 /* Frameworks */,
+				R10000000000000000000001 /* Resources */,
 				E10000000000000000000001 /* Embed App Extensions */,
 				H10000000000000000000001 /* Embed CFITSIO */,
 			);
@@ -223,6 +227,17 @@
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXResourcesBuildPhase section */
+		R10000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000000000000000000000B /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXProject section */
 		A10000000000000000000001 /* Project object */ = {
