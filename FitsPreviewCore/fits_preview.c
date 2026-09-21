@@ -38,6 +38,73 @@ void fits_preview_free(fits_preview *preview)
     preview->channels = 0;
 }
 
+/* Fit the image in the maximum box. The smaller scale is the tight axis. */
+static double thumb_fit_scale(int image_w, int image_h, int max_w, int max_h)
+{
+    double scale = (double)max_w / (double)image_w;
+
+    if ((double)max_h / (double)image_h < scale) {
+        scale = (double)max_h / (double)image_h;
+    }
+    return scale;
+}
+
+/* Thumbnail size that keeps the image aspect ratio.
+ * The longer side matches the request. The shorter side shrinks, so a
+ * wide or tall picture is not padded out to a square. A minimum that
+ * is larger than that fit grows both sides together. */
+void fits_preview_thumb_size(int image_w, int image_h,
+                             int max_w, int max_h,
+                             int min_w, int min_h,
+                             int *out_w, int *out_h)
+{
+    double scale;
+    double w;
+    double h;
+
+    if (out_w == NULL || out_h == NULL) {
+        return;
+    }
+    if (image_w < 1) {
+        image_w = 1;
+    }
+    if (image_h < 1) {
+        image_h = 1;
+    }
+    if (max_w < 1) {
+        max_w = image_w;
+    }
+    if (max_h < 1) {
+        max_h = image_h;
+    }
+    if (min_w < 1) {
+        min_w = 1;
+    }
+    if (min_h < 1) {
+        min_h = 1;
+    }
+    scale = thumb_fit_scale(image_w, image_h, max_w, max_h);
+    w = (double)image_w * scale;
+    h = (double)image_h * scale;
+    if (w < (double)min_w || h < (double)min_h) {
+        double grow = (double)min_w / w;
+
+        if ((double)min_h / h > grow) {
+            grow = (double)min_h / h;
+        }
+        w *= grow;
+        h *= grow;
+    }
+    if (w < 1.0) {
+        w = 1.0;
+    }
+    if (h < 1.0) {
+        h = 1.0;
+    }
+    *out_w = (int)(w + 0.5);
+    *out_h = (int)(h + 0.5);
+}
+
 /* Order finite samples for a percentile lookup. */
 static int cmp_double(const void *a, const void *b)
 {

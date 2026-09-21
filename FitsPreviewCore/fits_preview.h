@@ -34,4 +34,13 @@ int fits_preview_load(const char *path, int max_edge, int max_frames,
 /* Release pixels from a successful load. Safe on a zeroed preview. */
 void fits_preview_free(fits_preview *preview);
 
+/* Thumbnail size that keeps the image aspect ratio.
+ * The longer side matches the request. The shorter side shrinks, so a
+ * wide or tall picture is not padded out to a square. A minimum that
+ * is larger than that fit grows both sides together. */
+void fits_preview_thumb_size(int image_w, int image_h,
+                             int max_w, int max_h,
+                             int min_w, int min_h,
+                             int *out_w, int *out_h);
+
 #endif

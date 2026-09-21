@@ -25,16 +25,13 @@ static int edge_for_request(QLFileThumbnailRequest *request)
     return (int)edge;
 }
 
-/* Fit src into canvas without stretching. */
-static CGRect aspect_fit(CGRect canvas, int width, int height)
+/* Round a request edge. A missing edge stays 0 so the fitter can ignore it. */
+static int thumb_edge(CGFloat edge)
 {
-    CGFloat scale = MIN(canvas.size.width / (CGFloat)width,
-                        canvas.size.height / (CGFloat)height);
-    CGSize fitted = CGSizeMake((CGFloat)width * scale, (CGFloat)height * scale);
-
-    return CGRectMake((canvas.size.width - fitted.width) / 2.0,
-                      (canvas.size.height - fitted.height) / 2.0,
-                      fitted.width, fitted.height);
+    if (edge < 1.0) {
+        return 0;
+    }
+    return (int)(edge + 0.5);
 }
 
 /* Finder's bitmap is contextSize times request.scale, in raw pixels.
@@ -64,6 +61,8 @@ static CGRect full_canvas(CGContextRef context, CGSize contextSize, CGFloat scal
     int width;
     int height;
     int channels;
+    int thumb_w;
+    int thumb_h;
 
     memset(&preview, 0, sizeof preview);
     rc = FitsPreviewLoadURL(request.fileURL, edge_for_request(request), 1, &preview);
@@ -79,16 +78,16 @@ static CGRect full_canvas(CGContextRef context, CGSize contextSize, CGFloat scal
                            length:(NSUInteger)width * (NSUInteger)height * (NSUInteger)channels];
     fits_preview_free(&preview);
 
-    contextSize = request.maximumSize;
-    if (contextSize.width < 1 || contextSize.height < 1) {
-        contextSize = CGSizeMake(width, height);
-    }
-    if (contextSize.width < request.minimumSize.width) {
-        contextSize.width = request.minimumSize.width;
-    }
-    if (contextSize.height < request.minimumSize.height) {
-        contextSize.height = request.minimumSize.height;
-    }
+    /* The bitmap matches the picture, so the short side is not padded. */
+    thumb_w = width;
+    thumb_h = height;
+    fits_preview_thumb_size(width, height,
+                            thumb_edge(request.maximumSize.width),
+                            thumb_edge(request.maximumSize.height),
+                            thumb_edge(request.minimumSize.width),
+                            thumb_edge(request.minimumSize.height),
+                            &thumb_w, &thumb_h);
+    contextSize = CGSizeMake(thumb_w, thumb_h);
 
     handler([QLThumbnailReply replyWithContextSize:contextSize
                                       drawingBlock:^BOOL(CGContextRef context) {
@@ -98,8 +97,7 @@ static CGRect full_canvas(CGContextRef context, CGSize contextSize, CGFloat scal
             return NO;
         }
         CGContextDrawImage(context,
-                           aspect_fit(full_canvas(context, contextSize, request.scale),
-                                      width, height),
+                           full_canvas(context, contextSize, request.scale),
                            image);
         CGImageRelease(image);
         return YES;

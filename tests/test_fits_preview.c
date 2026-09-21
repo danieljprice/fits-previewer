@@ -294,6 +294,25 @@ static void test_up(void)
     fits_preview_free(&preview);
 }
 
+/* A wide picture's thumbnail uses its short side, not a square with bars. */
+static void test_thumb_size(void)
+{
+    int w = 0;
+    int h = 0;
+
+    fits_preview_thumb_size(690, 390, 256, 256, 1, 1, &w, &h);
+    expect_int("wide thumb w", w, 256);
+    expect_int("wide thumb h", h, 145);
+
+    fits_preview_thumb_size(390, 690, 256, 256, 1, 1, &w, &h);
+    expect_int("tall thumb w", w, 145);
+    expect_int("tall thumb h", h, 256);
+
+    fits_preview_thumb_size(128, 128, 64, 64, 1, 1, &w, &h);
+    expect_int("square thumb w", w, 64);
+    expect_int("square thumb h", h, 64);
+}
+
 /* One thumbnail frame of a cube is its brightest plane, as a still. */
 static void test_bright_frame(void)
 {
@@ -342,6 +361,7 @@ int main(void)
     test_up();
     test_compressed();
     test_missing();
+    test_thumb_size();
     test_bright_frame();
     if (g_failed) {
         fprintf(stderr, "preview tests failed\n");
