@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- PlugInKit ignores Quick Look appexes that are not sandboxed. -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<!--
+	  The embedded CFITSIO dylib is ad-hoc signed, so it has no team id.
+	  Library validation would refuse to load it. Drop this key once the
+	  app and the dylib are signed with the same Developer ID.
+	-->
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<true/>
+</dict>
+</plist>

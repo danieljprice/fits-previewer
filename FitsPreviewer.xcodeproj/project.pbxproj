@@ -1,0 +1,656 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B10000000000000000000001 /* fits_preview.c in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000002; };
+		B10000000000000000000002 /* FitsPreviewRender.m in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000E; };
+		B10000000000000000000003 /* PreviewProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000008; };
+		B10000000000000000000004 /* fits_preview.c in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000002; };
+		B10000000000000000000005 /* FitsPreviewRender.m in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000E; };
+		B10000000000000000000006 /* ThumbnailProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000B; };
+		B10000000000000000000007 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003; };
+		B10000000000000000000008 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005; };
+		B10000000000000000000009 /* FitsPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000002; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B1000000000000000000000A /* FitsThumbnail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000003; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C10000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001;
+			proxyType = 1;
+			remoteGlobalIDString = T10000000000000000000002;
+			remoteInfo = FitsPreview;
+		};
+		C10000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001;
+			proxyType = 1;
+			remoteGlobalIDString = T10000000000000000000003;
+			remoteInfo = FitsThumbnail;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E10000000000000000000001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B10000000000000000000009 /* FitsPreview.appex in Embed App Extensions */,
+				B1000000000000000000000A /* FitsThumbnail.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F10000000000000000000001 /* fits_preview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fits_preview.h; sourceTree = "<group>"; };
+		F10000000000000000000002 /* fits_preview.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fits_preview.c; sourceTree = "<group>"; };
+		F10000000000000000000003 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F10000000000000000000004 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F10000000000000000000005 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F10000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F10000000000000000000007 /* PreviewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreviewProvider.h; sourceTree = "<group>"; };
+		F10000000000000000000008 /* PreviewProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreviewProvider.m; sourceTree = "<group>"; };
+		F10000000000000000000009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F1000000000000000000000A /* ThumbnailProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThumbnailProvider.h; sourceTree = "<group>"; };
+		F1000000000000000000000B /* ThumbnailProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThumbnailProvider.m; sourceTree = "<group>"; };
+		F1000000000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F1000000000000000000000D /* FitsPreviewRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FitsPreviewRender.h; sourceTree = "<group>"; };
+		F1000000000000000000000E /* FitsPreviewRender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FitsPreviewRender.m; sourceTree = "<group>"; };
+		F20000000000000000000001 /* FitsPreviewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitsPreviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20000000000000000000002 /* FitsPreview.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FitsPreview.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20000000000000000000003 /* FitsThumbnail.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FitsThumbnail.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D10000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D10000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000002 /* root */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000004 /* FitsPreviewCore */,
+				A10000000000000000000008 /* FitsPreviewRender */,
+				A10000000000000000000005 /* FitsPreviewer */,
+				A10000000000000000000006 /* FitsPreview */,
+				A10000000000000000000007 /* FitsThumbnail */,
+				A10000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F20000000000000000000001 /* FitsPreviewer.app */,
+				F20000000000000000000002 /* FitsPreview.appex */,
+				F20000000000000000000003 /* FitsThumbnail.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000004 /* FitsPreviewCore */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000001 /* fits_preview.h */,
+				F10000000000000000000002 /* fits_preview.c */,
+			);
+			path = FitsPreviewCore;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000005 /* FitsPreviewer */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000003 /* main.m */,
+				F10000000000000000000004 /* AppDelegate.h */,
+				F10000000000000000000005 /* AppDelegate.m */,
+				F10000000000000000000006 /* Info.plist */,
+			);
+			path = FitsPreviewer;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000006 /* FitsPreview */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000007 /* PreviewProvider.h */,
+				F10000000000000000000008 /* PreviewProvider.m */,
+				F10000000000000000000009 /* Info.plist */,
+			);
+			path = FitsPreview;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000007 /* FitsThumbnail */ = {
+			isa = PBXGroup;
+			children = (
+				F1000000000000000000000A /* ThumbnailProvider.h */,
+				F1000000000000000000000B /* ThumbnailProvider.m */,
+				F1000000000000000000000C /* Info.plist */,
+			);
+			path = FitsThumbnail;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000008 /* FitsPreviewRender */ = {
+			isa = PBXGroup;
+			children = (
+				F1000000000000000000000D /* FitsPreviewRender.h */,
+				F1000000000000000000000E /* FitsPreviewRender.m */,
+			);
+			path = FitsPreviewRender;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T10000000000000000000001 /* FitsPreviewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L10000000000000000000004;
+			buildPhases = (
+				S10000000000000000000003 /* Sources */,
+				D10000000000000000000001 /* Frameworks */,
+				E10000000000000000000001 /* Embed App Extensions */,
+				H10000000000000000000001 /* Embed CFITSIO */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				P10000000000000000000001 /* PBXTargetDependency */,
+				P10000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = FitsPreviewer;
+			productName = FitsPreviewer;
+			productReference = F20000000000000000000001;
+			productType = "com.apple.product-type.application";
+		};
+		T10000000000000000000002 /* FitsPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L10000000000000000000005;
+			buildPhases = (
+				S10000000000000000000001 /* Sources */,
+				D10000000000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FitsPreview;
+			productName = FitsPreview;
+			productReference = F20000000000000000000002;
+			productType = "com.apple.product-type.app-extension";
+		};
+		T10000000000000000000003 /* FitsThumbnail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L10000000000000000000006;
+			buildPhases = (
+				S10000000000000000000002 /* Sources */,
+				D10000000000000000000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FitsThumbnail;
+			productName = FitsThumbnail;
+			productReference = F20000000000000000000003;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = L10000000000000000000001;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000002;
+			productRefGroup = A10000000000000000000003;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T10000000000000000000001 /* FitsPreviewer */,
+				T10000000000000000000002 /* FitsPreview */,
+				T10000000000000000000003 /* FitsThumbnail */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		H10000000000000000000001 /* Embed CFITSIO */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed CFITSIO";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "\"${SRCROOT}/scripts/embed_cfitsio.sh\" \"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		S10000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000001 /* fits_preview.c in Sources */,
+				B10000000000000000000002 /* FitsPreviewRender.m in Sources */,
+				B10000000000000000000003 /* PreviewProvider.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S10000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000004 /* fits_preview.c in Sources */,
+				B10000000000000000000005 /* FitsPreviewRender.m in Sources */,
+				B10000000000000000000006 /* ThumbnailProvider.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S10000000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000007 /* main.m in Sources */,
+				B10000000000000000000008 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		P10000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10000000000000000000002;
+			targetProxy = C10000000000000000000001;
+		};
+		P10000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10000000000000000000003;
+			targetProxy = C10000000000000000000002;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		X10000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		X10000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		X10000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsPreviewer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		X10000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsPreviewer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		X10000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					"$(SRCROOT)/FitsPreview",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsPreview/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-lcfitsio",
+					"-framework",
+					QuickLookUI,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer.Preview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		X10000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					"$(SRCROOT)/FitsPreview",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsPreview/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-lcfitsio",
+					"-framework",
+					QuickLookUI,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer.Preview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		X10000000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					"$(SRCROOT)/FitsThumbnail",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsThumbnail/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-lcfitsio",
+					"-framework",
+					QuickLookThumbnailing,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer.Thumbnail;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		X10000000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = FitsPreviewer/FitsPreviewer.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/FitsPreviewCore",
+					"$(SRCROOT)/FitsPreviewRender",
+					"$(SRCROOT)/FitsThumbnail",
+					/opt/homebrew/include,
+				);
+				INFOPLIST_FILE = FitsThumbnail/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-lcfitsio",
+					"-framework",
+					QuickLookThumbnailing,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer.Thumbnail;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		L10000000000000000000001 /* Build configuration list for PBXProject */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X10000000000000000000001 /* Debug */,
+				X10000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L10000000000000000000004 /* Build configuration list for PBXNativeTarget "FitsPreviewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X10000000000000000000003 /* Debug */,
+				X10000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L10000000000000000000005 /* Build configuration list for PBXNativeTarget "FitsPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X10000000000000000000005 /* Debug */,
+				X10000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L10000000000000000000006 /* Build configuration list for PBXNativeTarget "FitsThumbnail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				X10000000000000000000007 /* Debug */,
+				X10000000000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A10000000000000000000001;
+}

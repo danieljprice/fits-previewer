@@ -1,0 +1,6 @@
+build/
+dist/
+tests/test_images/
+DerivedData/
+.DS_Store
+*.zip

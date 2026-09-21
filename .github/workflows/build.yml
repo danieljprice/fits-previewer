@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CFITSIO
+        run: brew install cfitsio
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make app

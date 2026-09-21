@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundleDisplayName</key>
+	<string>FitsPreviewer</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>gov.nasa.gsfc.fits</string>
+			<key>UTTypeDescription</key>
+			<string>FITS file</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>fits</string>
+					<string>fit</string>
+					<string>fts</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>gov.nasa.gsfc.fits-gzip</string>
+			<key>UTTypeDescription</key>
+			<string>gzip-compressed FITS file</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>org.gnu.gnu-zip-archive</string>
+			</array>
+			<!-- Compound extension, so this does not claim every .gz file. -->
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>fits.gz</string>
+					<string>fit.gz</string>
+					<string>fts.gz</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>FITS file</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<!-- Same dynamic types as the Quick Look extensions. Alternate rank keeps DS9 as the opener. -->
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>gov.nasa.gsfc.fits</string>
+				<string>gov.nasa.gsfc.fits-gzip</string>
+				<string>gov.nasa.gsfc.fits-header</string>
+				<string>com.sao.SAOImageDS9</string>
+				<string>dyn.ah62d4rv4ge80q4pysq</string>
+				<string>dyn.ah62d4rv4ge80q4py</string>
+				<string>dyn.ah62d4rv4ge80q7a</string>
+				<string>dyn.ah62d4rv4ge8047a</string>
+				<string>dyn.ah62d4rv4ge81a4db</string>
+				<string>dyn.ah62d4rv4ge80c6xg</string>
+				<string>dyn.ah62d4rv4ge81e5pg</string>
+				<string>dyn.ah62d4rv4ge81e65u</string>
+				<string>dyn.ah62d4rv4ge81a4k</string>
+				<string>dyn.ah62d4rv4ge80w5pgrf4a</string>
+				<string>dyn.ah62d4rv4ge81n7xgrf4a</string>
+				<string>dyn.ah62d4rv4ge80w5pgrf4hg</string>
+				<string>dyn.ah62d4rv4ge81n7xgrf4hg</string>
+				<string>dyn.ah62d4rv4ge80262</string>
+				<string>dyn.ah62d4rv4ge80222</string>
+				<string>dyn.ah62d4rv4ge80n7xy</string>
+				<string>dyn.ah62d4rv4ge80c7dy</string>
+				<string>dyn.ah62d4rv4ge8086xc</string>
+				<string>dyn.ah62d46dzqm0gw23ssz1gw8brqz6gn25zsvu0e5dfhk2x43xmsu</string>
+				<string>dyn.ah62d46dzqm0gw23ssz1gw8brqz6gn25zsvu0e5dfhk2x43xmsv3u</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

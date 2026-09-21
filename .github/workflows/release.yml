@@ -1,0 +1,34 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CFITSIO
+        run: brew install cfitsio
+
+      - name: Test
+        run: make test
+
+      - name: Package
+        run: ./scripts/package.sh
+
+      - name: Upload zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" dist/FitsPreviewer.zip --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" dist/FitsPreviewer.zip \
+              --title "${GITHUB_REF_NAME}" --generate-notes
+          fi
