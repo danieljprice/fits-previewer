@@ -5,10 +5,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 make app
+APP="build/DerivedData/Build/Products/Release/FitsPreviewer.app"
+mkdir -p "$APP/Contents/Resources"
+cp -f LICENSE "$APP/Contents/Resources/LICENSE"
 mkdir -p dist
 rm -f dist/FitsPreviewer.zip
 ditto -c -k --keepParent \
-    build/DerivedData/Build/Products/Release/FitsPreviewer.app \
+    "$APP" \
     dist/FitsPreviewer.zip
 echo "wrote dist/FitsPreviewer.zip"
 shasum -a 256 dist/FitsPreviewer.zip
