@@ -294,16 +294,26 @@ static void test_up(void)
     fits_preview_free(&preview);
 }
 
-/* One thumbnail frame of a cube is the middle plane, as a still. */
-static void test_middle_frame(void)
+/* One thumbnail frame of a cube is its brightest plane, as a still. */
+static void test_bright_frame(void)
 {
     fits_preview preview;
     int rc = 0;
+    int i;
+    int peak = 0;
 
-    load_named("cube.fits", 64, 1, &preview, &rc);
-    expect_int("middle rc", rc, 0);
-    expect_int("middle kind", preview.kind, FITS_PREVIEW_IMAGE);
-    expect_int("middle frames", preview.nframes, 1);
+    load_named("bright_cube.fits", 64, 1, &preview, &rc);
+    expect_int("bright rc", rc, 0);
+    expect_int("bright kind", preview.kind, FITS_PREVIEW_IMAGE);
+    expect_int("bright frames", preview.nframes, 1);
+    if (preview.pixels != NULL) {
+        for (i = 0; i < preview.width * preview.height; i++) {
+            if (preview.pixels[i] > peak) {
+                peak = preview.pixels[i];
+            }
+        }
+    }
+    expect_int("bright peak", peak >= 250, 1);
     fits_preview_free(&preview);
 }
 
@@ -332,7 +342,7 @@ int main(void)
     test_up();
     test_compressed();
     test_missing();
-    test_middle_frame();
+    test_bright_frame();
     if (g_failed) {
         fprintf(stderr, "preview tests failed\n");
         return 1;

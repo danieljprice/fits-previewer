@@ -228,6 +228,29 @@ static int write_wide_table(const char *path)
     return report(status, path);
 }
 
+/* Five planes. The first has a bright patch and the rest are dark, so a
+ * one-frame preview must choose that plane, not the middle. */
+static int write_bright_cube(const char *path)
+{
+    fitsfile *fptr = NULL;
+    int status = 0;
+    long naxes[3] = {4, 4, 5};
+    short pix[4 * 4 * 5];
+
+    memset(pix, 0, sizeof pix);
+    pix[0] = 1000;
+    pix[1] = 1000;
+    pix[2] = 1000;
+    pix[3] = 1000;
+    if (open_new(path, &fptr)) {
+        return 1;
+    }
+    fits_create_img(fptr, SHORT_IMG, 3, naxes, &status);
+    fits_write_img(fptr, TSHORT, 1, 4 * 4 * 5, pix, &status);
+    fits_close_file(fptr, &status);
+    return report(status, path);
+}
+
 /* Small cube, one constant plane per index so the frame count is the test. */
 static int write_cube(const char *path, int naxis, const long *naxes)
 {
@@ -383,6 +406,10 @@ int make_test_images(const char *dir)
     }
     snprintf(path, sizeof path, "%s/spectrum_flat.fits", dir);
     if (write_spectrum_flat(path)) {
+        return 1;
+    }
+    snprintf(path, sizeof path, "%s/bright_cube.fits", dir);
+    if (write_bright_cube(path)) {
         return 1;
     }
     snprintf(path, sizeof path, "%s/cube.fits", dir);

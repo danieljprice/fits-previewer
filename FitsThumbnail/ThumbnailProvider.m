@@ -1,8 +1,8 @@
 /*
  * ThumbnailProvider.m
  *
- * Draw the middle plane into the thumbnail context. Files with no image
- * produce no thumbnail.
+ * Draw one plane into the thumbnail context. A cube contributes its
+ * brightest plane. Files with no image produce no thumbnail.
  */
 
 #import "ThumbnailProvider.h"
@@ -37,9 +37,23 @@ static CGRect aspect_fit(CGRect canvas, int width, int height)
                       fitted.width, fitted.height);
 }
 
+/* Finder's bitmap is contextSize times request.scale, in raw pixels.
+ * Drawing only contextSize leaves the picture in the lower left. */
+static CGRect full_canvas(CGContextRef context, CGSize contextSize, CGFloat scale)
+{
+    size_t pixels_wide = CGBitmapContextGetWidth(context);
+    size_t pixels_high = CGBitmapContextGetHeight(context);
+    CGFloat sx = scale > 1.0 ? scale : 1.0;
+
+    if (pixels_wide > 0 && pixels_high > 0) {
+        return CGRectMake(0, 0, (CGFloat)pixels_wide, (CGFloat)pixels_high);
+    }
+    return CGRectMake(0, 0, contextSize.width * sx, contextSize.height * sx);
+}
+
 @implementation ThumbnailProvider
 
-/* Draw one still. One frame means a cube contributes its middle plane. */
+/* Draw one still. One frame means a cube contributes its brightest plane. */
 - (void)provideThumbnailForFileRequest:(QLFileThumbnailRequest *)request
                      completionHandler:(void (^)(QLThumbnailReply *, NSError *))handler
 {
@@ -84,7 +98,7 @@ static CGRect aspect_fit(CGRect canvas, int width, int height)
             return NO;
         }
         CGContextDrawImage(context,
-                           aspect_fit(CGRectMake(0, 0, contextSize.width, contextSize.height),
+                           aspect_fit(full_canvas(context, contextSize, request.scale),
                                       width, height),
                            image);
         CGImageRelease(image);

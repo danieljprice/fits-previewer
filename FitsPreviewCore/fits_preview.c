@@ -179,6 +179,40 @@ static int read_plane(fitsfile *fptr, int naxis, const long *naxes,
     return status;
 }
 
+/* Read every plane_step-th plane in one call. *nout is the plane count. */
+static int read_plane_stack(fitsfile *fptr, int naxis, const long *naxes,
+                            int x_axis, long x_step, int y_axis, long y_step,
+                            int vary_axis, long plane_step, double *dst,
+                            long *nout)
+{
+    int status = 0;
+    int anynul = 0;
+    int i;
+    double nulval = NAN;
+    long fpixel[FITS_PREVIEW_MAX_AXES];
+    long lpixel[FITS_PREVIEW_MAX_AXES];
+    long inc[FITS_PREVIEW_MAX_AXES];
+
+    *nout = sampled_len(naxes[vary_axis], plane_step);
+    for (i = 0; i < naxis; i++) {
+        fpixel[i] = 1;
+        lpixel[i] = 1;
+        inc[i] = 1;
+    }
+    fpixel[x_axis] = 1;
+    lpixel[x_axis] = naxes[x_axis];
+    inc[x_axis] = x_step;
+    fpixel[y_axis] = 1;
+    lpixel[y_axis] = naxes[y_axis];
+    inc[y_axis] = y_step;
+    fpixel[vary_axis] = 1;
+    lpixel[vary_axis] = naxes[vary_axis];
+    inc[vary_axis] = plane_step;
+    fits_read_subset(fptr, TDOUBLE, fpixel, lpixel, inc, &nulval, dst,
+                     &anynul, &status);
+    return status;
+}
+
 /* Value at percentile p of a sorted sample. p is 0..1. */
 static double pct_sorted(const double *sorted, int n, double p)
 {
@@ -1029,6 +1063,131 @@ static void flip_vertical(unsigned char *pixels, int width, int height,
     free(tmp);
 }
 
+/* 1-based index of the plane with the highest finite pixel.
+ * Every channel is read in one subsampled stack so a long cube still
+ * finishes inside Finder's thumbnail time limit. A huge cube skips
+ * channels, then the skipped neighbours of the winner are checked.
+ * An empty cube falls back to the middle plane. */
+static long brightest_plane(fitsfile *fptr, int naxis, const long *naxes,
+                            int x_axis, long x_step, int y_axis, long y_step,
+                            int vary_axis, long nplanes)
+{
+    long best;
+    long xs;
+    long ys;
+    long ps;
+    long nout;
+    long nx;
+    long ny;
+    long per;
+    long i;
+    long p;
+    double best_peak = 0.0;
+    double *buf;
+    int have = 0;
+
+    best = nplanes / 2 + 1;
+    if (nplanes < 1 || vary_axis < 0) {
+        return 1;
+    }
+    xs = step_for(naxes[x_axis], 24);
+    ys = step_for(naxes[y_axis], 24);
+    if (xs < x_step) {
+        xs = x_step;
+    }
+    if (ys < y_step) {
+        ys = y_step;
+    }
+    nx = sampled_len(naxes[x_axis], xs);
+    ny = sampled_len(naxes[y_axis], ys);
+    if (nx < 1 || ny < 1) {
+        return best;
+    }
+    per = nx * ny;
+    ps = 1;
+    while (ps < nplanes && per > 0 &&
+           sampled_len(nplanes, ps) > 2000000 / per) {
+        ps++;
+    }
+    nout = sampled_len(nplanes, ps);
+    if (nout < 1 || (size_t)per > SIZE_MAX / (size_t)nout) {
+        return best;
+    }
+    buf = malloc((size_t)per * (size_t)nout * sizeof(double));
+    if (buf == NULL) {
+        return best;
+    }
+    if (read_plane_stack(fptr, naxis, naxes, x_axis, xs, y_axis, ys,
+                         vary_axis, ps, buf, &nout)) {
+        free(buf);
+        return best;
+    }
+    for (p = 0; p < nout; p++) {
+        double *plane = buf + (size_t)p * (size_t)per;
+        double peak = 0.0;
+        int saw = 0;
+
+        for (i = 0; i < per; i++) {
+            if (!isfinite(plane[i])) {
+                continue;
+            }
+            if (!saw || plane[i] > peak) {
+                peak = plane[i];
+                saw = 1;
+            }
+        }
+        if (saw && (!have || peak > best_peak)) {
+            best_peak = peak;
+            best = 1 + p * ps;
+            have = 1;
+        }
+    }
+    free(buf);
+
+    /* A skipped channel next to the winner may be the real peak. */
+    if (ps > 1 && have) {
+        long first = best - ps + 1;
+        long last = best + ps - 1;
+
+        if (first < 1) {
+            first = 1;
+        }
+        if (last > nplanes) {
+            last = nplanes;
+        }
+        buf = malloc((size_t)per * sizeof(double));
+        if (buf != NULL) {
+            for (p = first; p <= last; p++) {
+                double peak = 0.0;
+                int saw = 0;
+
+                if ((p - 1) % ps == 0) {
+                    continue;
+                }
+                if (read_plane(fptr, naxis, naxes, x_axis, xs, y_axis, ys,
+                               vary_axis, p, buf)) {
+                    continue;
+                }
+                for (i = 0; i < per; i++) {
+                    if (!isfinite(buf[i])) {
+                        continue;
+                    }
+                    if (!saw || buf[i] > peak) {
+                        peak = buf[i];
+                        saw = 1;
+                    }
+                }
+                if (saw && peak > best_peak) {
+                    best_peak = peak;
+                    best = p;
+                }
+            }
+            free(buf);
+        }
+    }
+    return best;
+}
+
 /* Build the preview for the current HDU. Returns 1 if out was filled. */
 static int render_hdu(fitsfile *fptr, int max_edge, int max_frames,
                       fits_preview *out)
@@ -1152,7 +1311,9 @@ static int render_hdu(fitsfile *fptr, int max_edge, int max_frames,
         long which = 1;
 
         if (vary_axis >= 0) {
-            which = plane_at(0, 1, kept_length[2]);
+            which = brightest_plane(fptr, naxis, naxes, kept_index[0], x_step,
+                                    kept_index[1], y_step, vary_axis,
+                                    kept_length[2]);
         }
         if (read_plane(fptr, naxis, naxes, kept_index[0], x_step,
                        kept_index[1], y_step, vary_axis, which, plane)) {
