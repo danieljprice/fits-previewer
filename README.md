@@ -56,9 +56,7 @@ That writes FITS files under `tests/test_images` and checks images, cubes, degen
 
 ## Distribution
 
-Pushing a tag such as `v1.0.0` runs the release workflow. That attaches `FitsPreviewer.zip` and `FitsPreviewer.dmg` to the GitHub release for the tag. The zip is what  Homebrew downloads. The disk image is the manual install: open it and drag FitsPreviewer onto the Applications folder.
-
-`./scripts/package.sh` builds the same files locally. It writes them under `dist/` and prints their sha256. Both are ad-hoc signed, so Gatekeeper blocks them until the app is notarized.
+Pushing a tag such as `v1.0.0` runs the release workflow. That attaches `FitsPreviewer.zip` and `FitsPreviewer.dmg` to the GitHub release for the tag. For a manual install you can just open the .dmg and drag FitsPreviewer onto the Applications folder.
 
 Currently the .app is unsigned because I am unwilling to pay $99 per year for the Apple developer program. If I paid the money then I would run:
 
