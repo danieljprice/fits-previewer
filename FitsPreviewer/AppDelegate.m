@@ -72,15 +72,24 @@ static BOOL launch_opens_documents(void)
 static void refresh_quicklook(void)
 {
     NSArray<NSArray<NSString *> *> *argSets = @[
+        @[@"-e", @"use", @"-i", @"com.fitspreviewer.FitsPreviewer.Preview"],
+        @[@"-e", @"use", @"-i", @"com.fitspreviewer.FitsPreviewer.Thumbnail"],
         @[@"-r"],
         @[@"-r", @"cache"],
     ];
+    NSArray<NSString *> *tools = @[
+        @"/usr/bin/pluginkit",
+        @"/usr/bin/pluginkit",
+        @"/usr/bin/qlmanage",
+        @"/usr/bin/qlmanage",
+    ];
+    NSUInteger i;
 
-    for (NSArray<NSString *> *arguments in argSets) {
+    for (i = 0; i < argSets.count; i++) {
         NSTask *task = [[NSTask alloc] init];
 
-        task.executableURL = [NSURL fileURLWithPath:@"/usr/bin/qlmanage"];
-        task.arguments = arguments;
+        task.executableURL = [NSURL fileURLWithPath:tools[i]];
+        task.arguments = argSets[i];
         task.standardOutput = [NSFileHandle fileHandleWithNullDevice];
         task.standardError = [NSFileHandle fileHandleWithNullDevice];
         @try {

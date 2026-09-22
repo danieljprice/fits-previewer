@@ -47,7 +47,10 @@ install: app
 	ditto "$(APP_BUNDLE)" "$(INSTALLED_APP)"
 	xattr -dr com.apple.quarantine "$(INSTALLED_APP)"
 	"$(LSREGISTER)" -f -R -trusted "$(INSTALLED_APP)"
+	pluginkit -e use -i com.fitspreviewer.FitsPreviewer.Preview 2>/dev/null || true
+	pluginkit -e use -i com.fitspreviewer.FitsPreviewer.Thumbnail 2>/dev/null || true
 	qlmanage -r
+	qlmanage -r cache
 
 # Remove the installed app and drop its Quick Look extensions from System Settings.
 uninstall:
