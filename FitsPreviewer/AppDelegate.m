@@ -122,6 +122,7 @@ static void show_alert(NSString *message)
         @"In Finder, select a .fits, .fit, .fts, or .fits.gz file and press the spacebar. "
         @"If Finder shows nothing, open System Settings → General → "
         @"Login Items & Extensions → Quick Look, and enable FitsPreviewer.\n\n"
+        @"Drop a FITS file on the Dock icon to open the preview image or movie.\n\n"
         @"Copyright (c) 2026 Daniel Price\n\n"
         @"Please report bugs to https://github.com/danieljprice/fits-previewer\n"
         @"and give a star on Github or buy me a coffee if you like it!";
