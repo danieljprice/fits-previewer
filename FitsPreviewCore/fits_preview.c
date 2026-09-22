@@ -2,7 +2,7 @@
  * fits_preview.c
  *
  * Walk HDUs with CFITSIO, drop axes of length 1, and scale the first
- * drawable image. Cubes are subsampled along the third remaining axis.
+ * drawable image. The QuickLook preview samples a limited number of cube images. 
  * A single remaining axis, or a short numeric table, is drawn as a line
  * with no axes or labels. The first FITS row is the bottom row, as in DS9.
  */
@@ -10,6 +10,7 @@
 #include "fits_preview.h"
 
 #include <ctype.h>
+#include <limits.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1324,10 +1325,16 @@ static int render_hdu(fitsfile *fptr, int max_edge, int max_frames,
         vary_axis = kept_index[2];
     } else if (nkept >= 3) {
         channels = 1;
-        if (kept_length[2] > FITS_PREVIEW_CUBE_FRAMES) {
-            nframes = FITS_PREVIEW_CUBE_FRAMES;
+        /* The spacebar preview asks for 32 images. A larger request, such as
+         * a file dropped on the Dock icon, keeps every image. */
+        if (kept_length[2] > INT_MAX) {
+            nframes = INT_MAX;
         } else {
             nframes = (int)kept_length[2];
+        }
+        if (max_frames <= FITS_PREVIEW_CUBE_FRAMES &&
+            nframes > FITS_PREVIEW_CUBE_FRAMES) {
+            nframes = FITS_PREVIEW_CUBE_FRAMES;
         }
         if (nframes > max_frames) {
             nframes = max_frames;

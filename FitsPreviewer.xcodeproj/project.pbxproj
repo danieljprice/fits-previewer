@@ -18,6 +18,8 @@
 		B10000000000000000000009 /* FitsPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000002; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B1000000000000000000000A /* FitsThumbnail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F20000000000000000000003; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B1000000000000000000000B /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000F; };
+		B1000000000000000000000C /* fits_preview.c in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000002; };
+		B1000000000000000000000D /* FitsPreviewRender.m in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000E; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -315,6 +317,8 @@
 			files = (
 				B10000000000000000000007 /* main.m in Sources */,
 				B10000000000000000000008 /* AppDelegate.m in Sources */,
+				B1000000000000000000000C /* fits_preview.c in Sources */,
+				B1000000000000000000000D /* FitsPreviewRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,8 +406,21 @@
 				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
+					"-lcfitsio",
 					"-framework",
 					Cocoa,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -430,8 +447,21 @@
 				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
+					"-lcfitsio",
 					"-framework",
 					Cocoa,
+					"-framework",
+					ImageIO,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					UniformTypeIdentifiers,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreMedia,
+					"-framework",
+					CoreVideo,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitspreviewer.FitsPreviewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -175,6 +175,25 @@ static void test_cube(void)
     fits_preview_free(&preview);
 }
 
+/* 32 frames is the spacebar sample. A higher limit keeps every plane. */
+static void test_long_cube(void)
+{
+    fits_preview preview;
+    int rc = 0;
+
+    load_named("long_cube.fits", 64, 32, &preview, &rc);
+    expect_int("long32 rc", rc, 0);
+    expect_int("long32 kind", preview.kind, FITS_PREVIEW_CUBE);
+    expect_int("long32 frames", preview.nframes, 32);
+    fits_preview_free(&preview);
+
+    load_named("long_cube.fits", 64, 100, &preview, &rc);
+    expect_int("long100 rc", rc, 0);
+    expect_int("long100 kind", preview.kind, FITS_PREVIEW_CUBE);
+    expect_int("long100 frames", preview.nframes, 40);
+    fits_preview_free(&preview);
+}
+
 /* NAXIS=4 with two trailing singleton axes is a still. */
 static void test_degenerate_still(void)
 {
@@ -353,6 +372,7 @@ int main(void)
     test_line("spectrum_flat.fits");
     test_line("line_table.fits");
     test_cube();
+    test_long_cube();
     test_degenerate_still();
     test_degenerate_cube();
     test_rgb();

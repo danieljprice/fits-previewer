@@ -87,6 +87,8 @@
 			<array>
 				<string>gov.nasa.gsfc.fits</string>
 				<string>gov.nasa.gsfc.fits-gzip</string>
+				<!-- .fits.gz is typed as gzip. Other .gz names are refused in the app. -->
+				<string>org.gnu.gnu-zip-archive</string>
 				<string>gov.nasa.gsfc.fits-header</string>
 				<string>com.sao.SAOImageDS9</string>
 				<string>dyn.ah62d4rv4ge80q4pysq</string>

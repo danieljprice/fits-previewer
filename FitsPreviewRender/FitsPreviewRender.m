@@ -19,12 +19,31 @@
 static const int kMovieTimescale = 12;
 static const int kMovieHold = 4;
 
-/* A unique file in the temporary directory. */
-static NSURL *temporary_file(NSString *extension)
+/* A file in the temporary directory. A stem keeps the viewer's title;
+ * nil uses a unique name so two previews do not collide. */
+static NSURL *temporary_file(NSString *stem, NSString *extension)
 {
-    NSString *name = [NSUUID.UUID.UUIDString stringByAppendingPathExtension:extension];
+    NSString *base;
+    NSString *name;
+    NSURL *url;
 
-    return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:name]];
+    if (stem.length == 0) {
+        base = NSUUID.UUID.UUIDString;
+    } else {
+        base = [[stem componentsSeparatedByCharactersInSet:
+                    [NSCharacterSet characterSetWithCharactersInString:@"/:\\"]]
+            componentsJoinedByString:@"-"];
+        if (base.length == 0) {
+            base = @"FitsPreview";
+        }
+    }
+    name = [base stringByAppendingPathExtension:extension];
+    url = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:name]];
+    /* A second drop of the same file replaces the previous export. */
+    if (stem.length > 0) {
+        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+    }
+    return url;
 }
 
 /* Free a buffer handed to a CGDataProvider. */
@@ -134,7 +153,7 @@ int FitsPreviewLoadURL(NSURL *url, int maxEdge, int maxFrames, fits_preview *out
 }
 
 /* Write one frame as a PNG. The buffer is copied into the image first. */
-NSURL *FitsPreviewWritePNG(const fits_preview *preview, int frame)
+NSURL *FitsPreviewWritePNG(const fits_preview *preview, int frame, NSString *name)
 {
     NSURL *url;
     CGImageRef image;
@@ -157,7 +176,7 @@ NSURL *FitsPreviewWritePNG(const fits_preview *preview, int frame)
     if (image == NULL) {
         return nil;
     }
-    url = temporary_file(@"png");
+    url = temporary_file(name, @"png");
     dest = CGImageDestinationCreateWithURL((__bridge CFURLRef)url,
                                            (__bridge CFStringRef)UTTypePNG.identifier,
                                            1, NULL);
@@ -230,7 +249,7 @@ static void fill_bgra(CVPixelBufferRef buffer, const fits_preview *preview, int 
 }
 
 /* Encode every frame as H.264. Nil means the caller should fall back to a still. */
-NSURL *FitsPreviewWriteMovie(const fits_preview *preview)
+NSURL *FitsPreviewWriteMovie(const fits_preview *preview, NSString *name)
 {
     NSURL *url;
     NSError *error = nil;
@@ -252,7 +271,7 @@ NSURL *FitsPreviewWriteMovie(const fits_preview *preview)
     outWidth = even_size(preview->width);
     outHeight = even_size(preview->height);
     fps = kMovieTimescale / kMovieHold;
-    url = temporary_file(@"mp4");
+    url = temporary_file(name, @"mp4");
     writer = [AVAssetWriter assetWriterWithURL:url fileType:AVFileTypeMPEG4 error:&error];
     if (writer == nil) {
         return nil;

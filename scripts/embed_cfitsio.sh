@@ -30,7 +30,14 @@ relink() {
         return 0
     fi
     entitlements="$(mktemp)"
-    codesign -d --entitlements :- "$bundle" >"$entitlements" 2>/dev/null
+    # The host executable is not signed yet. Xcode signs the app after this
+    # script. An extension is already signed, so keep its entitlements.
+    if ! codesign -d --entitlements :- "$bundle" >"$entitlements" 2>/dev/null; then
+        rm -f "$entitlements"
+        codesign --remove-signature "$bin" 2>/dev/null || true
+        install_name_tool -change "$old" "@rpath/libcfitsio.10.dylib" "$bin"
+        return 0
+    fi
     codesign --remove-signature "$bin"
     install_name_tool -change "$old" "@rpath/libcfitsio.10.dylib" "$bin"
     codesign --force --sign - --entitlements "$entitlements" --timestamp=none "$bundle"

@@ -49,20 +49,24 @@ int main(void)
             fprintf(stderr, "FAIL encode ramp load\n");
             return 1;
         }
-        png = FitsPreviewWritePNG(&preview, 0);
+        png = FitsPreviewWritePNG(&preview, 0, @"ramp");
         fits_preview_free(&preview);
         failed |= require_file(png, "png");
+        if (png != nil && ![png.lastPathComponent isEqualToString:@"ramp.png"]) {
+            fprintf(stderr, "FAIL png name %s\n", png.lastPathComponent.UTF8String);
+            failed = 1;
+        }
 
         if (fits_preview_load("tests/test_images/cube.fits", 64, 8, &preview) != 0 ||
             preview.kind != FITS_PREVIEW_CUBE) {
             fprintf(stderr, "FAIL encode cube load\n");
             return 1;
         }
-        movie = FitsPreviewWriteMovie(&preview);
+        movie = FitsPreviewWriteMovie(&preview, @"cube");
         fits_preview_free(&preview);
         failed |= require_file(movie, "movie");
-        if (movie != nil && ![movie.pathExtension isEqualToString:@"mp4"]) {
-            fprintf(stderr, "FAIL movie: extension %s\n", movie.pathExtension.UTF8String);
+        if (movie != nil && ![movie.lastPathComponent isEqualToString:@"cube.mp4"]) {
+            fprintf(stderr, "FAIL movie name %s\n", movie.lastPathComponent.UTF8String);
             failed = 1;
         }
         if (movie != nil) {

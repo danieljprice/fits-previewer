@@ -70,7 +70,7 @@ static void reply_still(NSData *bytes, int width, int height, int channels,
         return;
     }
     if (preview.kind == FITS_PREVIEW_CUBE) {
-        file = FitsPreviewWriteMovie(&preview);
+        file = FitsPreviewWriteMovie(&preview, nil);
     }
     if (file != nil) {
         fits_preview_free(&preview);
