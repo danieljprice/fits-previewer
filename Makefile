@@ -5,7 +5,7 @@ CC ?= clang
 CFLAGS ?= -std=c11 -Wall -Wextra -IFitsPreviewCore -I$(CFITSIO_PREFIX)/include
 LDFLAGS ?= -L$(CFITSIO_PREFIX)/lib -lcfitsio
 
-.PHONY: test app clean install
+.PHONY: test app clean install uninstall
 
 test: build/test_fits_preview build/encode_check
 	./build/test_fits_preview
@@ -30,6 +30,7 @@ build/encode_check: FitsPreviewCore/fits_preview.c FitsPreviewRender/FitsPreview
 DEVELOPER_DIR ?= /Applications/Xcode.app/Contents/Developer
 APP_BUNDLE := build/DerivedData/Build/Products/Release/FitsPreviewer.app
 INSTALL_DIR ?= $(HOME)/Applications
+INSTALLED_APP := $(INSTALL_DIR)/FitsPreviewer.app
 LSREGISTER := /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
 
 app:
@@ -43,10 +44,26 @@ app:
 # Copy the built app into ~/Applications and register the Quick Look extension.
 install: app
 	mkdir -p "$(INSTALL_DIR)"
-	ditto "$(APP_BUNDLE)" "$(INSTALL_DIR)/FitsPreviewer.app"
-	xattr -dr com.apple.quarantine "$(INSTALL_DIR)/FitsPreviewer.app"
-	"$(LSREGISTER)" -f -R -trusted "$(INSTALL_DIR)/FitsPreviewer.app"
+	ditto "$(APP_BUNDLE)" "$(INSTALLED_APP)"
+	xattr -dr com.apple.quarantine "$(INSTALLED_APP)"
+	"$(LSREGISTER)" -f -R -trusted "$(INSTALLED_APP)"
 	qlmanage -r
+
+# Remove the installed app and drop its Quick Look extensions from System Settings.
+uninstall:
+	killall FitsPreviewer FitsPreview FitsThumbnail 2>/dev/null || true
+	@for app in "$(INSTALLED_APP)" "$(APP_BUNDLE)"; do \
+		if [ -d "$$app" ]; then \
+			pluginkit -r "$$app/Contents/PlugIns/FitsPreview.appex" 2>/dev/null || true; \
+			pluginkit -r "$$app/Contents/PlugIns/FitsThumbnail.appex" 2>/dev/null || true; \
+			"$(LSREGISTER)" -u "$$app" 2>/dev/null || true; \
+		fi; \
+	done
+	pluginkit -e ignore -i com.fitspreviewer.FitsPreviewer.Preview 2>/dev/null || true
+	pluginkit -e ignore -i com.fitspreviewer.FitsPreviewer.Thumbnail 2>/dev/null || true
+	rm -rf "$(INSTALLED_APP)"
+	qlmanage -r
+	qlmanage -r cache
 
 clean:
 	rm -rf build tests/test_images

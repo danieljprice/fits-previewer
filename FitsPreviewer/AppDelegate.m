@@ -68,19 +68,26 @@ static BOOL launch_opens_documents(void)
     return [event eventClass] == kCoreEventClass && [event eventID] == kAEOpenDocuments;
 }
 
-/* Ask Quick Look to reload extensions after a fresh launch. */
+/* Ask Quick Look to reload extensions and drop stale Finder thumbnails. */
 static void refresh_quicklook(void)
 {
-    NSTask *task = [[NSTask alloc] init];
+    NSArray<NSArray<NSString *> *> *argSets = @[
+        @[@"-r"],
+        @[@"-r", @"cache"],
+    ];
 
-    task.executableURL = [NSURL fileURLWithPath:@"/usr/bin/qlmanage"];
-    task.arguments = @[@"-r"];
-    task.standardOutput = [NSFileHandle fileHandleWithNullDevice];
-    task.standardError = [NSFileHandle fileHandleWithNullDevice];
-    @try {
-        [task launch];
-    } @catch (NSException *exception) {
-        (void)exception;
+    for (NSArray<NSString *> *arguments in argSets) {
+        NSTask *task = [[NSTask alloc] init];
+
+        task.executableURL = [NSURL fileURLWithPath:@"/usr/bin/qlmanage"];
+        task.arguments = arguments;
+        task.standardOutput = [NSFileHandle fileHandleWithNullDevice];
+        task.standardError = [NSFileHandle fileHandleWithNullDevice];
+        @try {
+            [task launch];
+        } @catch (NSException *exception) {
+            (void)exception;
+        }
     }
 }
 

@@ -32,6 +32,12 @@ make install INSTALL_DIR=/Applications
 
 That copies the app to `/Applications/FitsPreviewer.app` and registers it. Use `make install` to put it in `~/Applications` instead.
 
+```sh
+make uninstall
+```
+
+That removes the installed app and drops the Quick Look extensions from System Settings. Pass the same `INSTALL_DIR` you used for install.
+
 ## Tests
 
 ```sh
