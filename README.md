@@ -65,3 +65,7 @@ xcrun notarytool store-credentials fits-previewer
 ./scripts/notarize.sh
 ```
 ...and you would get a signed app.
+
+## Credits
+
+Credits for the IM Lupi .fits file used to create the logo belong to Avenhaus et al. (2018) taken with the SPHERE instrument on ESO's Very Large Telescope. The sample cube I preview in the demo was from the MAPS project on the ALMA telescope (Öberg et al. 2021; Zhang et al. 2021). The background image on my desktop is the Hubble Space Telescope image of the Butterfly Nebula NGC 6302 (Credit: NASA/ESA).
