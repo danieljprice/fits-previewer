@@ -171,7 +171,8 @@ static void show_alert(NSString *message)
         return nil;
     }
     memset(&preview, 0, sizeof preview);
-    rc = FitsPreviewLoadURL(url, 16384, INT_MAX, &preview);
+    /* Native size and every cube plane. The spacebar preview stays smaller. */
+    rc = FitsPreviewLoadURL(url, INT_MAX, INT_MAX, &preview);
     if (rc != 0 || preview.kind == FITS_PREVIEW_NONE || preview.pixels == NULL) {
         fits_preview_free(&preview);
         show_alert(@"No image in this FITS file");

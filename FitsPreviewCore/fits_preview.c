@@ -1298,7 +1298,10 @@ static int render_hdu(fitsfile *fptr, int max_edge, int max_frames,
     color = nkept >= 3 && kept_length[2] == 3 &&
             axis_is_color(fptr, kept_index[2] + 1);
     edge = max_edge;
-    if (!color && nkept >= 3 && edge > FITS_PREVIEW_CUBE_EDGE) {
+    /* The spacebar preview asks for 32 frames and a small cube. A Dock
+     * export asks for every plane and keeps the native size. */
+    if (!color && nkept >= 3 && max_frames <= FITS_PREVIEW_CUBE_FRAMES &&
+        edge > FITS_PREVIEW_CUBE_EDGE) {
         edge = FITS_PREVIEW_CUBE_EDGE;
     }
     /* One step for both axes so a 2:1 image stays 2:1. */

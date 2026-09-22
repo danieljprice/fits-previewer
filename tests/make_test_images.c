@@ -369,6 +369,7 @@ int make_test_images(const char *dir)
     char path[512];
     long cube[3] = {6, 4, 5};
     long long_cube[3] = {2, 2, 40};
+    long big_cube[3] = {600, 400, 3};
     long still4[4] = {6, 4, 1, 1};
     long cube4[4] = {6, 4, 1, 5};
     long plain3[3] = {4, 3, 3};
@@ -419,6 +420,10 @@ int make_test_images(const char *dir)
     }
     snprintf(path, sizeof path, "%s/long_cube.fits", dir);
     if (write_cube(path, 3, long_cube)) {
+        return 1;
+    }
+    snprintf(path, sizeof path, "%s/big_cube.fits", dir);
+    if (write_cube(path, 3, big_cube)) {
         return 1;
     }
     snprintf(path, sizeof path, "%s/degenerate_still.fits", dir);

@@ -194,6 +194,29 @@ static void test_long_cube(void)
     fits_preview_free(&preview);
 }
 
+/* A spacebar cube is capped. A Dock-style request stays at the FITS size. */
+static void test_cube_edge(void)
+{
+    fits_preview preview;
+    int rc = 0;
+
+    load_named("big_cube.fits", 16384, 32, &preview, &rc);
+    expect_int("preview cube rc", rc, 0);
+    expect_int("preview cube kind", preview.kind, FITS_PREVIEW_CUBE);
+    expect_int("preview cube width", preview.width, 300);
+    expect_int("preview cube height", preview.height, 200);
+    expect_int("preview cube frames", preview.nframes, 3);
+    fits_preview_free(&preview);
+
+    load_named("big_cube.fits", 16384, 100, &preview, &rc);
+    expect_int("export cube rc", rc, 0);
+    expect_int("export cube kind", preview.kind, FITS_PREVIEW_CUBE);
+    expect_int("export cube width", preview.width, 600);
+    expect_int("export cube height", preview.height, 400);
+    expect_int("export cube frames", preview.nframes, 3);
+    fits_preview_free(&preview);
+}
+
 /* NAXIS=4 with two trailing singleton axes is a still. */
 static void test_degenerate_still(void)
 {
@@ -373,6 +396,7 @@ int main(void)
     test_line("line_table.fits");
     test_cube();
     test_long_cube();
+    test_cube_edge();
     test_degenerate_still();
     test_degenerate_cube();
     test_rgb();
