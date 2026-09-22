@@ -1,6 +1,6 @@
 # FitsPreviewer
 
-This package is something I have been dreaming of for a while. It implements a Finder Quick Look for FITS files on macOS. You can then press the spacebar on a `.fits` or `.fits.gz` file to see a preview of the image or data cube (for data cubes it shows a playable movie).
+This package is something I have been dreaming of for a while. It implements a Finder Quick Look for FITS files on macOS. You can then press the spacebar on a `.fits` or `.fits.gz` file to see a preview of the image or data cube (for data cubes it shows a playable movie). You can also drop a file on the Dock icon to open the image or movie in the default viewer (Preview or QuickTime Player).
 
 
 
