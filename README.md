@@ -15,6 +15,7 @@ https://github.com/user-attachments/assets/ab9a27bd-943a-4aa5-b348-41dad345f9c7
 Either download the .dmg file and drag to Applications, or install with homebrew: 
 ```sh
 brew tap danieljprice/all
+brew trust danieljprice/all
 brew install fits-previewer
 ```
 Launch FitsPreviewer once after installing. Then select a `.fits` or `.fits.gz` file in Finder and press the spacebar. 
