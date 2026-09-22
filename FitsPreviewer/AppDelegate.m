@@ -56,6 +56,34 @@ static NSString *preview_stem(NSURL *url)
     return name;
 }
 
+/* True when this launch was asked to open files (Dock drop or Open With). */
+static BOOL launch_opens_documents(void)
+{
+    NSAppleEventDescriptor *event =
+        [[NSAppleEventManager sharedAppleEventManager] currentAppleEvent];
+
+    if (event == nil) {
+        return NO;
+    }
+    return [event eventClass] == kCoreEventClass && [event eventID] == kAEOpenDocuments;
+}
+
+/* Ask Quick Look to reload extensions after a fresh launch. */
+static void refresh_quicklook(void)
+{
+    NSTask *task = [[NSTask alloc] init];
+
+    task.executableURL = [NSURL fileURLWithPath:@"/usr/bin/qlmanage"];
+    task.arguments = @[@"-r"];
+    task.standardOutput = [NSFileHandle fileHandleWithNullDevice];
+    task.standardError = [NSFileHandle fileHandleWithNullDevice];
+    @try {
+        [task launch];
+    } @catch (NSException *exception) {
+        (void)exception;
+    }
+}
+
 /* A short modal note. The help window stays up after this returns. */
 static void show_alert(NSString *message)
 {
@@ -79,6 +107,10 @@ static void show_alert(NSString *message)
                                            keyEquivalent:@"q"];
 
     (void)notification;
+    /* Mark drops before didFinishLaunching, or the help window races ahead. */
+    if (launch_opens_documents()) {
+        self.opening = YES;
+    }
     quit.target = NSApp;
     [appMenu addItem:quit];
     appItem.submenu = appMenu;
@@ -100,6 +132,9 @@ static void show_alert(NSString *message)
     CGFloat labelY;
     CGFloat contentHeight;
 
+    if (self.hideHelp || self.opening) {
+        return;
+    }
     if (self.window != nil) {
         [self.window makeKeyAndOrderFront:nil];
         [NSApp activateIgnoringOtherApps:YES];
@@ -202,12 +237,14 @@ static void show_alert(NSString *message)
         return;
     }
     if (self.openFailed || !self.openedAny) {
+        self.opening = NO;
         if (self.didLaunch) {
             [self showHelp];
         }
         return;
     }
     self.hideHelp = YES;
+    self.opening = NO;
     if (self.window != nil) {
         [self.window close];
     } else if (self.didLaunch) {
@@ -222,36 +259,31 @@ static void show_alert(NSString *message)
 
     self.pendingOpens += 1;
     [[NSWorkspace sharedWorkspace] openURL:file
-                              configuration:config
-                          completionHandler:^(NSRunningApplication *app, NSError *error) {
+                             configuration:config
+                         completionHandler:^(NSRunningApplication *app, NSError *error) {
         (void)app;
-        if (error != nil) {
-            self.openFailed = YES;
-            show_alert(@"Could not open the preview");
-        } else {
-            self.openedAny = YES;
-        }
-        self.pendingOpens -= 1;
-        [self finishDrop];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil) {
+                self.openFailed = YES;
+                show_alert(@"Could not open the preview");
+            } else {
+                self.openedAny = YES;
+            }
+            self.pendingOpens -= 1;
+            [self finishDrop];
+        });
     }];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)notification
+/* Export each dropped FITS file and open the PNG or movie. */
+- (void)handleOpenURLs:(NSArray<NSURL *> *)urls
 {
-    (void)notification;
-    self.didLaunch = YES;
-    if (self.opening) {
-        [self finishDrop];
-        return;
-    }
-    [self showHelp];
-}
-
-/* A drop or Open. A successful export skips the help window. */
-- (void)application:(NSApplication *)sender openURLs:(NSArray<NSURL *> *)urls
-{
-    (void)sender;
     self.opening = YES;
+    self.hideHelp = YES;
+    if (self.window != nil) {
+        [self.window close];
+        self.window = nil;
+    }
     if (self.pendingOpens == 0) {
         self.openedAny = NO;
         self.openFailed = NO;
@@ -266,6 +298,52 @@ static void show_alert(NSString *message)
         }
     }
     [self finishDrop];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
+{
+    (void)notification;
+    self.didLaunch = YES;
+    if (self.opening || self.hideHelp) {
+        [self finishDrop];
+        return;
+    }
+    /* openURLs can arrive just after this method; wait one turn. */
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.opening || self.hideHelp || self.pendingOpens > 0) {
+            return;
+        }
+        [self showHelp];
+        /* Only a plain launch refreshes Quick Look, not a Dock drop. */
+        refresh_quicklook();
+    });
+}
+
+- (void)application:(NSApplication *)sender openURLs:(NSArray<NSURL *> *)urls
+{
+    (void)sender;
+    [self handleOpenURLs:urls];
+}
+
+/*
+ * Older Open events still call openFile:. Returning YES stops AppKit from
+ * showing "cannot open files in the FITS file format".
+ */
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    [self handleOpenURLs:@[ [NSURL fileURLWithPath:filename] ]];
+    return YES;
+}
+
+- (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames
+{
+    NSMutableArray<NSURL *> *urls = [NSMutableArray arrayWithCapacity:filenames.count];
+
+    for (NSString *filename in filenames) {
+        [urls addObject:[NSURL fileURLWithPath:filename]];
+    }
+    [self handleOpenURLs:urls];
+    [sender replyToOpenOrPrint:NSApplicationDelegateReplySuccess];
 }
 
 /* Closing the note exits. There is nothing else for the host app to do. */
